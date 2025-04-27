@@ -24,7 +24,9 @@ export class AuthController {
 
   @Post('/register')
   @UsePipes(ValidationPipe)
-  async createUser(@Body() userData: createUserDto): Promise<createUserDto> {
+  async createUser(
+    @Body() userData: createUserDto,
+  ): Promise<Partial<createUserDto>> {
     return await this.UserService.createUser(userData);
   }
 }

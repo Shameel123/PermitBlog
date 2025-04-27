@@ -13,7 +13,7 @@ export class UsersService {
     private permitService: PermitService,
   ) {}
 
-  async createUser(createUserDto: createUserDto): Promise<User> {
+  async createUser(createUserDto: createUserDto): Promise<Partial<User>> {
     const userExists = await this.userModel.findOne({
       email: createUserDto?.email,
     });
@@ -37,8 +37,6 @@ export class UsersService {
         ],
       });
 
-    console.log('permitioUser', permitioUser);
-
     createUser.permitioUser = {
       key: permitioUser.key,
       id: permitioUser.id,
@@ -55,7 +53,12 @@ export class UsersService {
       attributes: permitioUser.attributes,
     };
 
-    return createUser.save();
+    const userCreated = await createUser.save();
+
+    return {
+      email: userCreated.email,
+      role: userCreated.role,
+    };
   }
 
   async findOne(email: string): Promise<User> {
