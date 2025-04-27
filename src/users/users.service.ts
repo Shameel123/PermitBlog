@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { createUserDto } from '../auth/DTO/createUsers.dto';
 import { User, userDocument } from './users.schema';
 import { PermitService } from 'src/permitio/permitio.service';
+import { AssignRoleDto } from './dto/assignRole.dto';
 
 @Injectable()
 export class UsersService {
@@ -69,5 +70,48 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     return user;
+  }
+
+  async assignRole(body: AssignRoleDto): Promise<any> {
+    const { email, role } = body;
+
+    // Find the user by email
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const permitioUser = await this.permitService
+      .getPermitInstance()
+      .api.assignRole({
+        user: user.permitioUser.key,
+        role,
+        tenant: process.env.PERMIT_IO_TENANT || 'default',
+      });
+
+    if (!permitioUser) {
+      throw new HttpException(
+        'Failed to assign role to user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // Update the user's role in the local database
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { email },
+      { role },
+      { new: true },
+    );
+
+    // If no user is updated, throw an exception
+    if (!updatedUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Return the updated user information
+    return {
+      email: updatedUser.email,
+      role: updatedUser.role,
+    };
   }
 }
