@@ -6,6 +6,8 @@ import { createUserDto } from '../auth/DTO/createUsers.dto';
 import { User, userDocument } from './users.schema';
 import { PermitService } from 'src/permitio/permitio.service';
 import { AssignRoleDto } from './dto/assignRole.dto';
+import { UserType } from './types/user';
+import { PERMIT_IO_RESOURCES } from 'src/permitio/types/resources';
 
 @Injectable()
 export class UsersService {
@@ -33,6 +35,11 @@ export class UsersService {
       .api.syncUser({
         key: createUser._id.toString(),
         email: createUser.email,
+        attributes: {
+          id: createUser._id.toString(), // (this is important because resource.id will be compared to user.id)
+          first_name: createUser.firstName,
+          last_name: createUser.lastName,
+        },
         role_assignments: [
           { role: 'viewer', tenant: process.env.PERMIT_IO_TENANT || 'default' },
         ],
@@ -113,5 +120,35 @@ export class UsersService {
       email: updatedUser.email,
       role: updatedUser.role,
     };
+  }
+
+  async getAllUsers(user: UserType): Promise<any> {
+    const permit = this.permitService.getPermitInstance();
+
+    const permitted = await permit.check(user.permitioUser.key, 'read', {
+      type: PERMIT_IO_RESOURCES.User,
+      tenant: process.env.PERMIT_IO_TENANT || 'default',
+    });
+
+    if (permitted) {
+      console.log(
+        `${user.permitioUser.email} is PERMITTED to read other users`,
+      );
+    } else {
+      console.log(
+        `${user.permitioUser.email} is NOT PERMITTED to read other users`,
+      );
+      throw new HttpException(
+        'You are not permitted to read other users',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    // Proceed with fetching all users
+    const users = await this.userModel.find();
+    if (!users) {
+      throw new HttpException('No users found', HttpStatus.NOT_FOUND);
+    }
+    return users;
   }
 }

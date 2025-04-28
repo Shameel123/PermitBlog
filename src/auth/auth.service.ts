@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
-import { UserType } from 'src/users/types/user';
+import { userDocument } from 'src/users/users.schema';
 
 @Injectable()
 export class AuthService {
@@ -13,14 +13,11 @@ export class AuthService {
 
   async validateUser(email: string, userId: string): Promise<any> {
     try {
-      const user = await this.usersService.findOne(email);
+      const user = (await this.usersService.findOne(email)) as userDocument;
+
       if (user && ['admin', 'editor', 'viewer'].includes(user.role)) {
-        const userWithTypedRole: UserType = {
-          ...user,
-          role: user.role as 'admin' | 'editor' | 'viewer',
-        };
-        if (user && userWithTypedRole._id?.toString() === userId) {
-          const { password, ...result } = userWithTypedRole;
+        if (user._id?.toString() === userId) {
+          const { password, ...result } = user;
           return result;
         }
         throw new HttpException('Invalid user role', HttpStatus.FORBIDDEN);
