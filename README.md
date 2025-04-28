@@ -54,10 +54,17 @@ The application uses MongoDB as its database. You can connect to a locally insta
    Example: `mongodb://localhost:27017/hasabTech-blog-permitio`.
 
 ### MongoDB with Docker
-1. Pull the MongoDB Docker image:
 
+Pull the MongoDB Docker image:
+
+```
 docker pull mongo
+```
+
+Run the docker image:
+```
 docker run --name mongodb -d -p 27017:27017 mongo
+```
 
 ## Permit.io Integration
 
