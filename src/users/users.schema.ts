@@ -14,7 +14,7 @@ export class User {
   @Prop({
     type: String,
     required: true,
-    enum: ['admin', 'editor', 'viewer'],
+    enum: ['admin', 'editor', 'author', 'viewer'],
     default: 'viewer',
   })
   role: string;

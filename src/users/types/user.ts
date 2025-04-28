@@ -4,7 +4,7 @@ export interface UserType {
   _id?: Types.ObjectId;
   email: string;
   password: string;
-  role: 'admin' | 'editor' | 'viewer';
+  role: 'admin' | 'editor' | 'author' | 'viewer';
   firstName?: string;
   lastName?: string;
   permitioUser: {

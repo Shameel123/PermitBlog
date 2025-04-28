@@ -126,7 +126,7 @@ export class UsersService {
     const permit = this.permitService.getPermitInstance();
 
     const permitted = await permit.check(user.permitioUser.key, 'read', {
-      type: PERMIT_IO_RESOURCES.User,
+      type: PERMIT_IO_RESOURCES.USER,
       tenant: process.env.PERMIT_IO_TENANT || 'default',
     });
 

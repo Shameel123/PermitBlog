@@ -4,6 +4,6 @@ export class AssignRoleDto {
   @IsEmail()
   email: string;
 
-  @IsIn(['admin', 'editor', 'viewer'])
-  role: 'admin' | 'editor' | 'viewer';
+  @IsIn(['admin', 'editor', 'author', 'viewer'])
+  role: 'admin' | 'editor' | 'author' | 'viewer';
 }

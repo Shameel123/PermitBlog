@@ -7,7 +7,7 @@ export class createUserDto {
   @Length(5, 25)
   password: string;
 
-  @IsIn(['admin', 'editor', 'viewer'])
+  @IsIn(['admin', 'editor', 'author', 'viewer'])
   role = 'viewer';
 
   @IsOptional()
