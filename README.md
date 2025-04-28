@@ -14,6 +14,7 @@ A headless blog system built with NestJS providing powerful role-based access co
 - **Content Workflow**: Complete post lifecycle including drafting, co-authoring, review, and publishing
 - **RESTful API**: Well-structured endpoints for all operations
 - **MongoDB Integration**: Flexible document storage for your content
+- **Soft Delete**: Mark records as deleted without permanently removing them from the database 
 
 ## 📋 Prerequisites
 
@@ -50,8 +51,8 @@ Then fill in the required configuration:
 ```
 # Permit.io Configuration
 PERMIT_IO_PDP='https://cloudpdp.api.permit.io'  # Or 'http://localhost:7766' for local development with docker
-PERMIT_IO_TOKEN='permit_key_your_api_key_here'
-PERMIT_IO_TENANT='permitblog'
+PERMIT_IO_TOKEN='permit_key_your_api_key_here' ## Get this from Permit.io Dashboard.
+PERMIT_IO_TENANT='permitblog' ## Need to create tanant in Permit.io first.
 
 # MongoDB Configuration
 MONGO_DB_URI=mongodb://localhost:27017/PermitBlog
@@ -176,7 +177,7 @@ PermitBlog uses Permit.io to implement the following permission model:
 **Admin** capabilities:
 - [ ] Create user(s)
 - [ ] Update user(s)
-- [ ] Read all users
+- [ ] Read all users (Currently any role with `read` permission in Permit.io can read all users)
 - [ ] Delete user(s)
 
 **Editor/Author/Viewer** capabilities:
