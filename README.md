@@ -114,7 +114,7 @@ docker pull mongo
 docker run --name mongodb -d -p 27017:27017 mongo
 ```
 
-## 🚪 API Endpoints
+## API Endpoints
 
 ### Authentication
 
@@ -141,8 +141,9 @@ docker run --name mongodb -d -p 27017:27017 mongo
 | PATCH  | `/post/:id/review` | Approve/reject post | `{ "status": "approved" }` or `{ "status": "rejected", "rejectedReason": "reason" }` | JWT Token |
 | PATCH  | `/post/:id/publish` | Publish a post | None | JWT Token |
 | PATCH  | `/post/:id/archive` | Archive a post | None | JWT Token |
+| DELETE  | `/post/:id` | Deletes a post | None | JWT Token |
 
-## 🔄 Post Workflow
+## Post Workflow
 
 The PermitBlog system implements a complete post workflow:
 
@@ -152,7 +153,7 @@ The PermitBlog system implements a complete post workflow:
 4. **Publishing**: Approved posts can be published
 5. **Archiving**: Published posts can be archived
 
-## 🛡️ Authorization Flow
+## Authorization Flow
 
 PermitBlog uses Permit.io to implement the following permission model:
 
@@ -170,7 +171,7 @@ PermitBlog uses Permit.io to implement the following permission model:
 ### Viewer
 - Can view published posts
 
-## 📝 Roadmap
+## Roadmap
 
 ### User Management:
 
@@ -191,15 +192,15 @@ PermitBlog uses Permit.io to implement the following permission model:
 - [ ] Implement Permit.io-based access control for deleting posts
 - [ ] Review and update the `PostService` code to fully utilize Permit.io for post actions
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - [NestJS](https://nestjs.com/)
 - [MongoDB](https://www.mongodb.com/)
