@@ -1,10 +1,18 @@
-# PERMIT_IO_PDP='http://localhost:7766'
-PERMIT_IO_PDP='https://cloudpdp.api.permit.io'
-PERMIT_IO_TOKEN='permit_key_dH6*****************'
+# Permit.io Configuration
+PERMIT_IO_PDP='https://cloudpdp.api.permit.io'  # Or 'http://localhost:7766' for local development with docker
+PERMIT_IO_TOKEN='permit_key_your_api_key_here'
 PERMIT_IO_TENANT='permitblog'
-ENVIRONMENT=development
+
+# MongoDB Configuration
 MONGO_DB_URI=mongodb://localhost:27017/PermitBlog
-PORT=3001
-JwtSecret=454CJASDFKJASDFJKHJHK132ADFSHU
+
+# JWT Configuration
+JwtSecret=your_jwt_secret_here
 JWT_EXPIRATION=1d
-BackendApiKey=2EJHKSADFKHJASDFKHJ123789123GHJKADSKF
+
+# API Key for Backend Operations
+BackendApiKey=your_backend_api_key_here
+
+# Server Configuration
+PORT=3001
+ENVIRONMENT=development

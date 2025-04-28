@@ -1,152 +1,205 @@
-# PermitBlog: A Headless Blog System
+# PermitBlog
 
-This is the backend for the HasabTech Blog application, built using the [NestJS](https://nestjs.com/) framework. It provides APIs for user management, post management, and role-based access control using [Permit.io](https://permit.io/).
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![NestJS](https://img.shields.io/badge/NestJS-v10.0+-red.svg)
+![MongoDB](https://img.shields.io/badge/MongoDB-v5.0+-green.svg)
+![Permit.io](https://img.shields.io/badge/Permit.io-Integrated-orange.svg)
 
----
+A headless blog system built with NestJS providing powerful role-based access control through Permit.io integration. PermitBlog offers a complete backend solution for managing blog posts with sophisticated authorization workflows.
 
-## Prerequisites
+## Features
+
+- **Advanced Authorization**: Role-based access control (RBAC) using Permit.io
+- **User Management**: Registration, authentication, and role assignment
+- **Content Workflow**: Complete post lifecycle including drafting, co-authoring, review, and publishing
+- **RESTful API**: Well-structured endpoints for all operations
+- **MongoDB Integration**: Flexible document storage for your content
+
+## 📋 Prerequisites
+
 - [Node.js](https://nodejs.org/) (v22 or higher recommended)
-- npm (comes with Node.js)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [MongoDB](https://www.mongodb.com/) (v5.0+ recommended)
+- [Permit.io](https://permit.io/) account
 
----
+## 🚀 Getting Started
 
-## Environment Variables
+### 1. Clone the repository
 
-The application requires the following environment variables to be set in a `.env` file:
-
-### Permit.io Configuration
-- **`PERMIT_IO_PDP`**: The Permit.io Policy Decision Point (PDP) URL.  
-  Example: `http://localhost:7766` (for local development with docker, required for ABAC and ReBAC) or `https://cloudpdp.api.permit.io` (for RBAC only).
-- **`PERMIT_IO_TOKEN`**: The Permit.io API token for authentication. You can get it from Permit.io platform: Projects > Environment > Click Card on Top Right > Copy API Key
-  Example: `permit_key_dH6******************`.
-- **`PERMIT_IO_TENANT`**: The tenant identifier for Permit.io.  
-  Example: `permit-blog`. Nest.js in code refers to `default` if this is not set.
-
-### MongoDB Configuration
-- **`MONGO_DB_URI`**: The MongoDB connection string.  
-  Example: `mongodb://localhost:27017/permit-blog`.
-
-### JWT Configuration
-- **`JwtSecret`**: The secret key used to sign JWT tokens.  
-  Example: `454C5CE3123123HJJHK123`.
-- **`JWT_EXPIRATION`**: The expiration time for JWT tokens.  
-  Example: `1d`.
-
-### API Key
-- **`BackendApiKey`**: The API key used for secure backend communication. For example, changing role of a user directly from API. 
-  Example: `2E91JKH23JHK123JHK12HJK3HF`.
-
-### Port
-**`PORT`**=3001
-By default, it runs on 3000.
-
-
----
-
-## Database Connectivity
-
-The application uses MongoDB as its database. You can connect to a locally installed MongoDB instance or use a Docker container.
-
-### Local MongoDB Installation
-1. Install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
-2. Start the MongoDB service.
-3. Update the `MONGO_DB_URI` in the `.env` file to point to your local MongoDB instance.  
-   Example: `mongodb://localhost:27017/hasabTech-blog-permitio`.
-
-### MongoDB with Docker
-
-Pull the MongoDB Docker image:
-
-```
-docker pull mongo
+```bash
+git clone https://github.com/yourusername/permitblog.git
+cd permitblog
 ```
 
-Run the docker image:
-```
-docker run --name mongodb -d -p 27017:27017 mongo
-```
+### 2. Install dependencies
 
-## Permit.io Integration
-
-The application uses Permit.io for role-based access control. Ensure the following:
-
-- Set up a Permit.io account and create a project.
-- (Optional) Define tenant and then copy its value to `PERMIT_IO_TENANT`
-- Obtain the `PERMIT_IO_PDP` and `PERMIT_IO_TOKEN` values from your Permit.io dashboard.
-- Define roles and permissions in Permit.io to match the application's requirements
-
-Following Roles and Resources should match in your Permit.io environment/dashboard as well:
-### Roles
-Roles should match currently as per the code:
-- admin
-- editor
-- author
-- viewer
-
-### Resources
-There are 2 resource currently:
-- Post
-- User
-
-## Running the Application
-
-### Install dependencies:
-```
+```bash
 npm install
 ```
 
-### Fill Environment Details
+### 3. Set up environment variables
 
-Run this command to get `.env` in directory:
-```
+Create a `.env` file in the root directory:
+
+```bash
 cp env-example .env
 ```
-Then fill in the details for:
+
+Then fill in the required configuration:
+
 ```
-#PERMIT_IO_PDP='http://localhost:7766'
-PERMIT_IO_PDP='https://cloudpdp.api.permit.io'
-PERMIT_IO_TOKEN='permit_key_dH6*****************'
+# Permit.io Configuration
+PERMIT_IO_PDP='https://cloudpdp.api.permit.io'  # Or 'http://localhost:7766' for local development with docker
+PERMIT_IO_TOKEN='permit_key_your_api_key_here'
 PERMIT_IO_TENANT='permitblog'
-ENVIRONMENT=development
+
+# MongoDB Configuration
 MONGO_DB_URI=mongodb://localhost:27017/PermitBlog
-PORT=3001
-JwtSecret=454CJASDFKJASDFJKHJHK132ADFSHU
+
+# JWT Configuration
+JwtSecret=your_jwt_secret_here
 JWT_EXPIRATION=1d
-BackendApiKey=2EJHKSADFKHJASDFKHJ123789123GHJKADSKF
 
+# API Key for Backend Operations
+BackendApiKey=your_backend_api_key_here
+
+# Server Configuration
+PORT=3001
+ENVIRONMENT=development
 ```
 
-### Start Application
+### 4. Set up Permit.io
 
-Development Mode:
-```
+1. Create a Permit.io account and set up a project
+2. Define the following roles in your Permit.io dashboard:
+   - `admin`
+   - `editor`
+   - `author`
+   - `viewer`
+3. Define the following resources:
+   - `Post`
+   - `User`
+4. Configure the appropriate permissions for each role-resource combination
+5. Copy your API key from the Permit.io dashboard to your `.env` file
+
+### 5. Start the application
+
+For development:
+```bash
 npm run start:dev
 ```
-Production Mode:
-```
+
+For production:
+```bash
+npm run build
 npm run start:prod
 ```
 
-## API Endpoints
-The application exposes RESTful APIs for user and post management. Refer to the source code for detailed routes and functionality.
+## 🔌 Database Setup
 
-## Pending/Todo:
+### Option 1: Local MongoDB
+
+1. Install MongoDB from the [official website](https://www.mongodb.com/try/download/community)
+2. Start the MongoDB service
+3. Your connection string will be: `mongodb://localhost:27017/PermitBlog`
+
+### Option 2: MongoDB with Docker
+
+```bash
+# Pull the MongoDB image
+docker pull mongo
+
+# Run MongoDB container
+docker run --name mongodb -d -p 27017:27017 mongo
+```
+
+## 🚪 API Endpoints
+
+### Authentication
+
+| Method | Endpoint        | Description            | Request Body                         | Authorization |
+|--------|-----------------|------------------------|--------------------------------------|---------------|
+| POST   | `/auth/register` | Register a new user    | `{ "email": "user@example.com", "password": "password" }` | None |
+| POST   | `/auth/login`    | Login and get JWT token | `{ "email": "user@example.com", "password": "password" }` | None |
+
+### User Management
+
+| Method | Endpoint        | Description            | Request Body                         | Authorization |
+|--------|-----------------|------------------------|--------------------------------------|---------------|
+| GET    | `/user/all`     | Get all users          | None                                 | JWT Token |
+| POST   | `/user/assign-role` | Assign role to user | `{ "email": "user@example.com", "role": "editor" }` | Backend API Key |
+
+### Posts
+
+| Method | Endpoint        | Description            | Request Body                         | Authorization |
+|--------|-----------------|------------------------|--------------------------------------|---------------|
+| POST   | `/post`         | Create a new post      | Post object (title, content, tags, etc.) | JWT Token |
+| POST   | `/post/:id/co-author` | Add co-author to post | `{ "userId": "user_id" }` | JWT Token |
+| DELETE | `/post/:id/co-author/:userId` | Remove co-author | None | JWT Token |
+| PATCH  | `/post/:id/submit-for-review` | Submit post for review | Post object | JWT Token |
+| PATCH  | `/post/:id/review` | Approve/reject post | `{ "status": "approved" }` or `{ "status": "rejected", "rejectedReason": "reason" }` | JWT Token |
+| PATCH  | `/post/:id/publish` | Publish a post | None | JWT Token |
+| PATCH  | `/post/:id/archive` | Archive a post | None | JWT Token |
+
+## 🔄 Post Workflow
+
+The PermitBlog system implements a complete post workflow:
+
+1. **Creation**: Authors create draft posts
+2. **Collaboration**: Authors can add co-authors to their posts
+3. **Review Process**: Posts are submitted for review by editors
+4. **Publishing**: Approved posts can be published
+5. **Archiving**: Published posts can be archived
+
+## 🛡️ Authorization Flow
+
+PermitBlog uses Permit.io to implement the following permission model:
+
+### Admin
+- Full access to all resources and actions
+
+### Editor
+- Can review and approve/reject posts
+- Can publish approved posts
+
+### Author
+- Can create, edit and submit their own posts
+- Can add co-authors to their posts
+
+### Viewer
+- Can view published posts
+
+## 📝 Roadmap
 
 ### User Management:
 
-**Admin** can:
+**Admin** capabilities:
 - [ ] Create user(s)
 - [ ] Update user(s)
 - [ ] Read all users
 - [ ] Delete user(s)
 
-**Editor/Author/Viewer** can:
+**Editor/Author/Viewer** capabilities:
 - [ ] Read their own user-related data
 
 ### Posts:
 
 **Publish Post | Archive Post | Delete Post:**
-- [ ] Migrate co-author logic for archiving posts to ABAC with Permit.io.
-- [ ] Implement Permit.io-based access control for publishing posts.
-- [ ] Implement Permit.io-based access control for deleting posts.
-- [ ] Review and update the `PostService` code to fully utilize Permit.io for post actions.
+- [ ] Migrate co-author logic for archiving posts to ABAC with Permit.io
+- [ ] Implement Permit.io-based access control for publishing posts
+- [ ] Implement Permit.io-based access control for deleting posts
+- [ ] Review and update the `PostService` code to fully utilize Permit.io for post actions
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgements
+
+- [NestJS](https://nestjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Permit.io](https://permit.io/)
