@@ -1,99 +1,118 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# PermitBlog: A Headless Blog System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend for the HasabTech Blog application, built using the [NestJS](https://nestjs.com/) framework. It provides APIs for user management, post management, and role-based access control using [Permit.io](https://permit.io/).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Environment Variables
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The application requires the following environment variables to be set in a `.env` file:
 
-## Project setup
+### Permit.io Configuration
+- **`PERMIT_IO_PDP`**: The Permit.io Policy Decision Point (PDP) URL.  
+  Example: `http://localhost:7766` (for local development with docker, required for ABAC and ReBAC) or `https://cloudpdp.api.permit.io` (for RBAC only).
+- **`PERMIT_IO_TOKEN`**: The Permit.io API token for authentication. You can get it from Permit.io platform: Projects > Environment > Click Card on Top Right > Copy API Key
+  Example: `permit_key_dH6******************`.
+- **`PERMIT_IO_TENANT`**: The tenant identifier for Permit.io.  
+  Example: `permit-blog`. Nest.js in code refers to `default` if this is not set.
 
-```bash
-$ npm install
+### MongoDB Configuration
+- **`MONGO_DB_URI`**: The MongoDB connection string.  
+  Example: `mongodb://localhost:27017/permit-blog`.
+
+### JWT Configuration
+- **`JwtSecret`**: The secret key used to sign JWT tokens.  
+  Example: `454C5CE3123123HJJHK123`.
+- **`JWT_EXPIRATION`**: The expiration time for JWT tokens.  
+  Example: `1d`.
+
+### API Key
+- **`BackendApiKey`**: The API key used for secure backend communication. For example, changing role of a user directly from API. 
+  Example: `2E91JKH23JHK123JHK12HJK3HF`.
+
+### Port
+**`PORT`**=3001
+By default, it runs on 3000.
+
+
+---
+
+## Database Connectivity
+
+The application uses MongoDB as its database. You can connect to a locally installed MongoDB instance or use a Docker container.
+
+### Local MongoDB Installation
+1. Install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
+2. Start the MongoDB service.
+3. Update the `MONGO_DB_URI` in the `.env` file to point to your local MongoDB instance.  
+   Example: `mongodb://localhost:27017/hasabTech-blog-permitio`.
+
+### MongoDB with Docker
+1. Pull the MongoDB Docker image:
+
+docker pull mongo
+docker run --name mongodb -d -p 27017:27017 mongo
+
+## Permit.io Integration
+
+The application uses Permit.io for role-based access control. Ensure the following:
+
+- Set up a Permit.io account and create a project.
+- (Optional) Define tenant and then copy its value to `PERMIT_IO_TENANT`
+- Obtain the `PERMIT_IO_PDP` and `PERMIT_IO_TOKEN` values from your Permit.io dashboard.
+- Define roles and permissions in Permit.io to match the application's requirements
+
+Following Roles and Resources should match in your Permit.io environment/dashboard as well:
+### Roles
+Roles should match currently as per the code:
+- admin
+- editor
+- author
+- viewer
+
+### Resources
+There are 2 resource currently:
+- Post
+- User
+
+## Running the Application
+
+### Install dependencies:
+```
+npm install
 ```
 
-## Compile and run the project
+### Start Application
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+Development Mode:
+```
+npm run start:dev
+```
+Production Mode:
+```
+npm run start:prod
 ```
 
-## Run tests
+## API Endpoints
+The application exposes RESTful APIs for user and post management. Refer to the source code for detailed routes and functionality.
 
-```bash
-# unit tests
-$ npm run test
+## Pending/Todo:
 
-# e2e tests
-$ npm run test:e2e
+### User Management:
 
-# test coverage
-$ npm run test:cov
-```
+**Admin** can:
+- [ ] Create user(s)
+- [ ] Update user(s)
+- [ ] Read all users
+- [ ] Delete user(s)
 
-## Deployment
+**Editor/Author/Viewer** can:
+- [ ] Read their own user-related data
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Posts:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Publish Post | Archive Post | Delete Post:**
+- [ ] Migrate co-author logic for archiving posts to ABAC with Permit.io.
+- [ ] Implement Permit.io-based access control for publishing posts.
+- [ ] Implement Permit.io-based access control for deleting posts.
+- [ ] Review and update the `PostService` code to fully utilize Permit.io for post actions.

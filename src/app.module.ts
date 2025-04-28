@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PermitService } from './permitio/permitio.service';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PermitService } from './permitio/permitio.service';
     ),
     AuthModule,
     UsersModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService, PermitService],
