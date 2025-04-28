@@ -4,6 +4,12 @@ This is the backend for the HasabTech Blog application, built using the [NestJS]
 
 ---
 
+## Prerequisites
+- [Node.js](https://nodejs.org/) (v22 or higher recommended)
+- npm (comes with Node.js)
+
+---
+
 ## Environment Variables
 
 The application requires the following environment variables to be set in a `.env` file:
@@ -80,6 +86,27 @@ There are 2 resource currently:
 ### Install dependencies:
 ```
 npm install
+```
+
+### Fill Environment Details
+
+Run this command to get `.env` in directory:
+```
+cp env-example .env
+```
+Then fill in the details for:
+```
+#PERMIT_IO_PDP='http://localhost:7766'
+PERMIT_IO_PDP='https://cloudpdp.api.permit.io'
+PERMIT_IO_TOKEN='permit_key_dH6*****************'
+PERMIT_IO_TENANT='permitblog'
+ENVIRONMENT=development
+MONGO_DB_URI=mongodb://localhost:27017/PermitBlog
+PORT=3001
+JwtSecret=454CJASDFKJASDFJKHJHK132ADFSHU
+JWT_EXPIRATION=1d
+BackendApiKey=2EJHKSADFKHJASDFKHJ123789123GHJKADSKF
+
 ```
 
 ### Start Application
