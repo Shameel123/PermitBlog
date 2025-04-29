@@ -51,7 +51,7 @@ A headless blog system built with NestJS providing powerful role-based access co
 
 ```bash
 git clone https://github.com/Shameel123/PermitBlog
-cd permitblog
+cd PermitBlog
 ```
 
 ### 2. Install dependencies
