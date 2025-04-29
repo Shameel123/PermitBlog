@@ -72,6 +72,8 @@ ENVIRONMENT=development
 
 #### 1. Create a Permit.io account and set up a project
 
+This quickstart from official Permit.io docs should help: https://docs.permit.io/quickstart/
+
 #### 2. Define the following roles in your Permit.io dashboard
 - `admin`
 - `editor`
