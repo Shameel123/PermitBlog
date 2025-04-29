@@ -111,7 +111,11 @@ npm run start:prod
 docker pull mongo
 
 # Run MongoDB container
-docker run --name mongodb -d -p 27017:27017 mongo
+docker run -d \
+  --name PermitBlog \
+  -p 27017:27017 \
+  -v permitblog_data:/data/db \
+  mongo
 ```
 
 ## API Endpoints

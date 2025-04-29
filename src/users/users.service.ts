@@ -36,7 +36,7 @@ export class UsersService {
         key: createUser._id.toString(),
         email: createUser.email,
         attributes: {
-          id: createUser._id.toString(), // (this is important because resource.id will be compared to user.id)
+          id: createUser._id.toString(),
           first_name: createUser.firstName,
           last_name: createUser.lastName,
         },
