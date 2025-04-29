@@ -16,6 +16,28 @@ A headless blog system built with NestJS providing powerful role-based access co
 - **MongoDB Integration**: Flexible document storage for your content
 - **Soft Delete**: Mark records as deleted without permanently removing them from the database 
 
+## Roadmap
+
+### User Management:
+
+**Admin** capabilities:
+- [x] Read all users 
+- [ ] Create user(s)
+- [ ] Update user(s)
+- [ ] Delete user(s)
+- [ ] Assign and Unassign Editor and Viewer role to user(s)
+
+**Editor/Author/Viewer** capabilities:
+- [ ] Read their own user-related data
+
+### Posts:
+
+**Publish Post | Archive Post | Delete Post:**
+- [ ] Migrate co-author logic for archiving posts to ABAC with Permit.io
+- [ ] Implement Permit.io-based access control for publishing posts
+- [ ] Implement Permit.io-based access control for deleting posts
+- [ ] Review and update the `PostService` code to fully utilize Permit.io for post actions
+
 ## 📋 Prerequisites
 
 - [Node.js](https://nodejs.org/) (v22 or higher recommended)
@@ -195,27 +217,6 @@ PermitBlog uses Permit.io to implement the following permission model:
 ### Viewer
 - Can view published posts
 
-## Roadmap
-
-### User Management:
-
-**Admin** capabilities:
-- [x] Read all users 
-- [ ] Create user(s)
-- [ ] Update user(s)
-- [ ] Delete user(s)
-- [ ] Assign and Unassign Editor and Viewer role to user(s)
-
-**Editor/Author/Viewer** capabilities:
-- [ ] Read their own user-related data
-
-### Posts:
-
-**Publish Post | Archive Post | Delete Post:**
-- [ ] Migrate co-author logic for archiving posts to ABAC with Permit.io
-- [ ] Implement Permit.io-based access control for publishing posts
-- [ ] Implement Permit.io-based access control for deleting posts
-- [ ] Review and update the `PostService` code to fully utilize Permit.io for post actions
 
 ## Contributing
 
