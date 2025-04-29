@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { userDocument } from 'src/users/users.schema';
+import { ROLES } from './role.enum';
 
 @Injectable()
 export class AuthService {
@@ -14,8 +15,7 @@ export class AuthService {
   async validateUser(email: string, userId: string): Promise<any> {
     try {
       const user = (await this.usersService.findOne(email)) as userDocument;
-
-      if (user && ['admin', 'editor', 'viewer'].includes(user.role)) {
+      if (user && Object.values(ROLES).includes(user.role as ROLES)) {
         if (user._id?.toString() === userId) {
           const { password, ...result } = user;
           return result;
