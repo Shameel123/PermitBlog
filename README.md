@@ -200,10 +200,11 @@ PermitBlog uses Permit.io to implement the following permission model:
 ### User Management:
 
 **Admin** capabilities:
+- [x] Read all users 
 - [ ] Create user(s)
 - [ ] Update user(s)
-- [ ] Read all users (Currently any role with `read` permission in Permit.io can read all users)
 - [ ] Delete user(s)
+- [ ] Assign and Unassign Editor and Viewer role to user(s)
 
 **Editor/Author/Viewer** capabilities:
 - [ ] Read their own user-related data

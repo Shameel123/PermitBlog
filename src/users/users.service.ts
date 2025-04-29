@@ -88,34 +88,50 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const permitioUser = await this.permitService
-      .getPermitInstance()
-      .api.assignRole({
-        user: user.permitioUser.key,
-        role,
-        tenant: process.env.PERMIT_IO_TENANT || 'default',
-      });
+    const permit = this.permitService.getPermitInstance();
+    const tenant = process.env.PERMIT_IO_TENANT || 'default';
+    const permitioUserKey = user.permitioUser.key;
 
-    if (!permitioUser) {
+    // Step 1: Get all current roles assigned to the user
+    const assignments = await permit.api.getAssignedRoles(
+      permitioUserKey,
+      tenant,
+    );
+
+    // Step 2: Unassign all existing roles
+    for (const assignment of assignments) {
+      await permit.api.unassignRole({
+        user: assignment.user,
+        role: assignment.role,
+        tenant: assignment.tenant,
+      });
+    }
+
+    // Step 3: Assign the new role
+    const assigned = await permit.api.assignRole({
+      user: permitioUserKey,
+      role,
+      tenant,
+    });
+
+    if (!assigned) {
       throw new HttpException(
         'Failed to assign role to user',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
-    // Update the user's role in the local database
+    // Step 4: Update the user's role in the local database
     const updatedUser = await this.userModel.findOneAndUpdate(
       { email },
       { role },
       { new: true },
     );
 
-    // If no user is updated, throw an exception
     if (!updatedUser) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    // Return the updated user information
     return {
       email: updatedUser.email,
       role: updatedUser.role,
@@ -124,6 +140,21 @@ export class UsersService {
 
   async getAllUsers(user: UserType): Promise<any> {
     const permit = this.permitService.getPermitInstance();
+
+    const roles = await permit.api.getAssignedRoles(
+      user.permitioUser.key,
+      process.env.PERMIT_IO_TENANT || 'default',
+    );
+    console.log(`${user.permitioUser.email} has roles:`, roles);
+    const isAdmin = roles.some((role) => role.role === 'admin');
+    console.log(`${user.permitioUser.email} is admin:`, isAdmin);
+    if (!isAdmin) {
+      console.log(`${user.permitioUser.email} is NOT an admin`);
+      throw new HttpException(
+        'You are not permitted to read other users',
+        HttpStatus.FORBIDDEN,
+      );
+    }
 
     const permitted = await permit.check(user.permitioUser.key, 'read', {
       type: PERMIT_IO_RESOURCES.USER,
