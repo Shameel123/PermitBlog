@@ -50,7 +50,7 @@ A headless blog system built with NestJS providing powerful role-based access co
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/permitblog.git
+git clone https://github.com/Shameel123/PermitBlog
 cd permitblog
 ```
 
