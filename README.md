@@ -68,41 +68,37 @@ BackendApiKey=your_backend_api_key_here
 PORT=3001
 ENVIRONMENT=development
 ```
-
 ### 4. Set up Permit.io
 
-1. Create a Permit.io account and set up a project
+#### 1. Create a Permit.io account and set up a project
 
-2. Define the following roles in your Permit.io dashboard:
-   - `admin`
-   - `editor`
-   - `author`
-   - `viewer`
+#### 2. Define the following roles in your Permit.io dashboard
+- `admin`
+- `editor`
+- `author`
+- `viewer`
 
 Roles are set up in Permit.io like this:
 ![Roles](docs/images/permitio-roles.png)
 
-3. Define the following resources:
-   - `Post`
-   - `User`
+#### 3. Define the following resources
+- `Post`
+- `User`
 
 Two resources for "User" and "Post" should be here like this:
 ![Resources](docs/images/permitio-resources.png)
 
-4. Configure the appropriate permissions for each role-resource combination
-
+#### 4. Configure the appropriate permissions for each role-resource combination
 
 Following actions for "User" resource should be set:
 ![User Resource](docs/images/permitio-resources-user.png)
 
 Following actions for "Post" resource should be set:
-![User Resource](docs/images/permitio-resources-post.png)
+![Post Resource](docs/images/permitio-resources-post.png)
 
-
-5. Copy your API key from the Permit.io dashboard to your `.env` file
+#### 5. Copy your API key from the Permit.io dashboard to your `.env` file
 
 ![Permit.io API Key](docs/images/permitio-copy-api-key.png)
-
 
 
 ### 5. Start the application
